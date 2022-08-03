@@ -1,0 +1,58 @@
+{
+  "name": "mythix-orm-sqlite",
+  "version": "1.0.0",
+  "description": "SQLite driver for Mythix ORM",
+  "main": "lib/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node ./node_modules/.bin/jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/th317erd/mythix-orm-sqlite.git"
+  },
+  "keywords": [
+    "orm",
+    "mysql",
+    "postgres",
+    "postgresql",
+    "mssql",
+    "mongo",
+    "snowflake",
+    "database",
+    "sql",
+    "no-sql"
+  ],
+  "author": "Wyatt Greenway",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/th317erd/mythix-orm-sqlite/issues"
+  },
+  "homepage": "https://github.com/th317erd/mythix-orm-sqlite#readme",
+  "peerDependencies": {
+    "mythix-orm": "^1.0.0",
+    "mythix-orm-sql-base": "^1.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^7.6.2",
+    "nife": "^1.10.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@spothero/eslint-plugin-spothero": "github:spothero/eslint-plugin-spothero",
+    "eslint": "^8.13.0",
+    "jasmine": "^4.3.0",
+    "moment": "^2.29.4",
+    "nyc": "^15.1.0"
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "spec/**",
+      "lib/proxy-class/proxy-class.js"
+    ]
+  }
+}
