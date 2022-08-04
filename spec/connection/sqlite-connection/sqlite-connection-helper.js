@@ -1,5 +1,6 @@
 'use strict';
 
+const { Utils }            = require('mythix-orm');
 const { SQLiteConnection } = require('../../../lib');
 
 async function createConnection() {
@@ -13,12 +14,14 @@ async function createConnection() {
 
   await connection.start();
 
-  let models  = connection.getModels();
-  let keys    = Object.keys(models);
+  let models      = connection.getModels();
+  let modelNames  = Object.keys(models);
 
-  for (let i = 0, il = keys.length; i < il; i++) {
-    let key   = keys[i];
-    let model = models[key];
+  modelNames = Utils.sortModelNamesByCreationOrder(connection, modelNames);
+
+  for (let i = 0, il = modelNames.length; i < il; i++) {
+    let modelName = modelNames[i];
+    let model     = models[modelName];
 
     await createTable(connection, model);
   }
