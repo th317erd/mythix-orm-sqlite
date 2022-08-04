@@ -5,7 +5,10 @@
   "main": "lib/index.js",
   "type": "commonjs",
   "scripts": {
-    "test": "node ./node_modules/.bin/jasmine"
+    "coverage": "clear ; node ./node_modules/.bin/nyc ./node_modules/.bin/jasmine",
+    "test": "node ./node_modules/.bin/jasmine",
+    "test-debug": "node --inspect-brk ./node_modules/.bin/jasmine",
+    "test-watch": "watch 'clear ; node ./node_modules/.bin/jasmine' . --wait=2 --interval=1"
   },
   "repository": {
     "type": "git",
