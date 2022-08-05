@@ -140,7 +140,7 @@ describe('SQLiteConnection', () => {
         await connection.insert(models.ExtendedUser, userModels);
 
         let user = await models.ExtendedUser.where.first();
-        expect(JSON.stringify(user)).toEqual('{"id":1,"createdAt":"07.30.2022 15:39:01","email":"test@example.com","firstName":"Mary","lastName":"Anne","playerType":"wizard","primaryRoleID":null,"updatedAt":"07.30.2022 15:39:01"}');
+        expect(JSON.stringify(user)).toEqual('{"id":1,"createdAt":"07.30.2022 22:39:01","email":"test@example.com","firstName":"Mary","lastName":"Anne","playerType":"wizard","primaryRoleID":null,"updatedAt":"07.30.2022 22:39:01"}');
       });
     });
 
@@ -203,7 +203,7 @@ describe('SQLiteConnection', () => {
         expect(validationModels[0].onBeforeCreate.calls.count()).toEqual(1);
         expect(validationModels[1].onBeforeCreate.calls.count()).toEqual(1);
 
-        validationModels = await Utils.collect(models.ValidationTest.all());
+        validationModels = await models.ValidationTest.all();
         expect(validationModels).toBeInstanceOf(Array);
         expect(validationModels.length).toEqual(2);
         expect(Object.assign(validationModels[0].toJSON(), { id: null })).toEqual({
@@ -254,7 +254,7 @@ describe('SQLiteConnection', () => {
         expect(validationModels[0].onBeforeUpdate.calls.count()).toEqual(0);
         expect(validationModels[1].onBeforeUpdate.calls.count()).toEqual(0);
 
-        validationModels = await Utils.collect(models.ValidationTest.all());
+        validationModels = await models.ValidationTest.all();
         expect(validationModels).toBeInstanceOf(Array);
         expect(validationModels.length).toEqual(2);
 
@@ -272,7 +272,7 @@ describe('SQLiteConnection', () => {
         expect(validationModels[0].onBeforeUpdate.calls.count()).toEqual(1);
         expect(validationModels[1].onBeforeUpdate.calls.count()).toEqual(1);
 
-        validationModels = await Utils.collect(models.ValidationTest.all());
+        validationModels = await models.ValidationTest.all();
         expect(validationModels).toBeInstanceOf(Array);
         expect(validationModels.length).toEqual(2);
         expect(Object.assign(validationModels[0].toJSON(), { id: null })).toEqual({

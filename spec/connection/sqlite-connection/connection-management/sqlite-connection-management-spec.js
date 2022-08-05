@@ -162,7 +162,7 @@ describe('SQLiteConnection', () => {
     describe('findAllFieldsFromFieldProjectionMap', () => {
       it('will return all fields from projection map', async () => {
         let queryGenerator      = connection.getQueryGenerator();
-        let sqlStatement        = queryGenerator.generateSelectStatement(User.where.id.EQ(Role.where.id).firstName.EQ('Mary').OR.lastName.EQ(null).ORDER('User:firstName').PROJECT('*'));
+        let sqlStatement        = queryGenerator.generateSelectStatement(User.where.id.EQ(Role.where.id).AND.firstName.EQ('Mary').OR.lastName.EQ(null).ORDER('User:firstName').PROJECT('*'));
         let projectionFieldMap  = queryGenerator.parseFieldProjectionToFieldMap(sqlStatement);
 
         expect(connection.findAllFieldsFromFieldProjectionMap(projectionFieldMap)).toEqual([
@@ -177,7 +177,7 @@ describe('SQLiteConnection', () => {
 
       it('will return the raw projection field as a string if field can not be found', async () => {
         let queryGenerator      = connection.getQueryGenerator();
-        let sqlStatement        = queryGenerator.generateSelectStatement(User.where.id.EQ(Role.where.id).firstName.EQ('Mary').OR.lastName.EQ(null).ORDER('User:firstName').PROJECT('*', new Literals.Literal('COUNT(*)')));
+        let sqlStatement        = queryGenerator.generateSelectStatement(User.where.id.EQ(Role.where.id).AND.firstName.EQ('Mary').OR.lastName.EQ(null).ORDER('User:firstName').PROJECT('*', new Literals.Literal('COUNT(*)')));
         let projectionFieldMap  = queryGenerator.parseFieldProjectionToFieldMap(sqlStatement);
 
         expect(connection.findAllFieldsFromFieldProjectionMap(projectionFieldMap)).toEqual([

@@ -153,7 +153,7 @@ describe('SQLiteConnection', () => {
           { name: 'test2' },
         ]);
 
-        let roles = await Utils.collect(user.getRoles(Role.where.ORDER('Role:name'), { includeRelations: true }));
+        let roles = await user.getRoles(Role.where.ORDER('Role:name'), { includeRelations: true });
 
         expect(roles).toBeInstanceOf(Array);
         expect(roles.length).toEqual(3);
@@ -194,7 +194,7 @@ describe('SQLiteConnection', () => {
           { name: 'test2' },
         ]);
 
-        let roles = await Utils.collect(user.getRoles(Role.where.ORDER('Role:name')));
+        let roles = await user.getRoles(Role.where.ORDER('Role:name'));
 
         expect(roles).toBeInstanceOf(Array);
         expect(roles.length).toEqual(2);
@@ -214,7 +214,7 @@ describe('SQLiteConnection', () => {
         expect(await Role.count()).toBe(4);
         expect(await UserRole.count()).toBe(2);
 
-        roles = await Utils.collect(user.getRoles(Role.where.ORDER('Role:name')));
+        roles = await user.getRoles(Role.where.ORDER('Role:name'));
 
         expect(roles).toBeInstanceOf(Array);
         expect(roles.length).toEqual(2);
@@ -273,7 +273,7 @@ describe('SQLiteConnection', () => {
         expect(await Role.count()).toEqual(2);
         expect(await UserRole.count()).toEqual(1);
 
-        let updatedRoles = await Utils.collect(user.getRoles(Role.where.ORDER('Role:name')));
+        let updatedRoles = await user.getRoles(Role.where.ORDER('Role:name'));
         expect(updatedRoles).toBeInstanceOf(Array);
         expect(updatedRoles.length).toEqual(1);
         expect(updatedRoles[0].id).toEqual(roles[1].id);
@@ -305,7 +305,7 @@ describe('SQLiteConnection', () => {
         expect(await Role.count()).toEqual(2);
         expect(await UserRole.count()).toEqual(1);
 
-        let updatedRoles = await Utils.collect(user.getRoles(Role.where.ORDER('Role:name')));
+        let updatedRoles = await user.getRoles(Role.where.ORDER('Role:name'));
         expect(updatedRoles).toBeInstanceOf(Array);
         expect(updatedRoles.length).toEqual(1);
         expect(updatedRoles[0].id).toEqual(roles[1].id);
@@ -345,7 +345,7 @@ describe('SQLiteConnection', () => {
         expect(await Role.count()).toEqual(2);
         expect(await UserRole.count()).toEqual(0);
 
-        let allRoles = await Utils.collect(Role.where.ORDER('name').all());
+        let allRoles = await Role.where.ORDER('name').all();
         expect(allRoles).toBeInstanceOf(Array);
         expect(allRoles.length).toEqual(2);
         expect(allRoles[0].name).toEqual('safe1');
@@ -383,7 +383,7 @@ describe('SQLiteConnection', () => {
         expect(await Role.count()).toEqual(3);
         expect(await UserRole.count()).toEqual(1);
 
-        let allRoles = await Utils.collect(Role.where.ORDER('name').all());
+        let allRoles = await Role.where.ORDER('name').all();
         expect(allRoles).toBeInstanceOf(Array);
         expect(allRoles.length).toEqual(3);
         expect(allRoles[0].name).toEqual('safe1');
@@ -422,7 +422,7 @@ describe('SQLiteConnection', () => {
         expect(await Role.count()).toEqual(3);
         expect(await UserRole.count()).toEqual(1);
 
-        let allRoles = await Utils.collect(Role.where.ORDER('name').all());
+        let allRoles = await Role.where.ORDER('name').all();
         expect(allRoles).toBeInstanceOf(Array);
         expect(allRoles.length).toEqual(3);
         expect(allRoles[0].name).toEqual('safe1');
