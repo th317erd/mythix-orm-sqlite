@@ -4,11 +4,17 @@ const { Types } = require('mythix-orm');
 const User      = require('./user-model');
 
 class ExtendedUser extends User {
-  static fields = User.cloneFields({
+  static fields = User.mergeFields({
     'id': {
-      type:         Types.INTEGER,
-      defaultValue: Types.INTEGER.Default.AUTO_INCREMENT,
+      type:         Types.BIGINT,
+      defaultValue: Types.BIGINT.Default.AUTO_INCREMENT,
       primaryKey:   true,
+      allowNull:    false,
+      unique:       true, // should be ignored when create table query is generated
+    },
+    'autoID': {
+      type:         Types.BIGINT,
+      defaultValue: Types.BIGINT.Default.AUTO_INCREMENT,
       allowNull:    false,
       unique:       true, // should be ignored when create table query is generated
     },

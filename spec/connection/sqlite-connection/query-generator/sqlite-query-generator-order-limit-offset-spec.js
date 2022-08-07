@@ -3,7 +3,7 @@
 
 'use strict';
 
-/* global describe, it, expect, beforeEach */
+/* global describe, it, expect, beforeAll */
 
 const { SQLiteConnection } = require('../../../../lib');
 
@@ -12,9 +12,11 @@ describe('SQLiteQueryGenerator', () => {
   let User;
   let Role;
 
-  beforeEach(() => {
+  beforeAll(() => {
     connection = new SQLiteConnection({
-      models: require('../../../support/models'),
+      emulateBigIntAutoIncrement: true,
+      bindModels:                 false,
+      models:                     require('../../../support/models'),
     });
 
     let models = connection.getModels();

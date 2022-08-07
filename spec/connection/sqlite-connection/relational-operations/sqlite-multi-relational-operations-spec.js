@@ -4,8 +4,6 @@
 
 /* global describe, it, beforeAll, afterEach, beforeAll, expect */
 
-const { Utils } = require('mythix-orm');
-
 const {
   createConnection,
   truncateTables,

@@ -3,7 +3,7 @@
 
 'use strict';
 
-/* global describe, it, expect, beforeEach */
+/* global describe, it, expect, beforeAll */
 
 const { Literals }          = require('mythix-orm');
 const { SQLiteConnection }  = require('../../../../lib');
@@ -15,9 +15,11 @@ describe('SQLiteQueryGenerator', () => {
   let UserThing;
   let RoleThing;
 
-  beforeEach(() => {
+  beforeAll(() => {
     connection = new SQLiteConnection({
-      models: require('../../../support/models'),
+      emulateBigIntAutoIncrement: true,
+      bindModels:                 false,
+      models:                     require('../../../support/models'),
     });
 
     let models = connection.getModels();
@@ -330,11 +332,6 @@ describe('SQLiteQueryGenerator', () => {
     it('should not generate anything if no tables are being joined', () => {
       let queryGenerator = connection.getQueryGenerator();
       expect(queryGenerator.generateSelectQueryJoinTables(User.where.primaryRoleID.EQ('derp').AND.id.EQ('hello'))).toEqual('');
-    });
-
-    it('should throw an error if the join point has a condition', () => {
-      let queryGenerator = connection.getQueryGenerator();
-      expect(() => queryGenerator.generateSelectQueryJoinTables(User.where.primaryRoleID.EQ(Role.where.id.EQ('derp')))).toThrow(new Error('SQLiteQueryGenerator::getJoinTableInfoFromQueryEngine: Invalid operation: Expected a field to join on, but instead received a query.'));
     });
   });
 

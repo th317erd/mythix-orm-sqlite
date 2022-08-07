@@ -3,7 +3,7 @@
 
 'use strict';
 
-/* global describe, it, expect, beforeEach */
+/* global describe, it, expect, beforeAll */
 
 const { SQLiteConnection } = require('../../../lib');
 
@@ -13,9 +13,11 @@ describe('SQLiteQueryGenerator', () => {
   let RoleThing;
   let ExtendedUser;
 
-  beforeEach(() => {
+  beforeAll(() => {
     connection = new SQLiteConnection({
-      models: require('../../support/models'),
+      emulateBigIntAutoIncrement: true,
+      bindModels:                 false,
+      models:                     require('../../support/models'),
     });
 
     let models = connection.getModels();
@@ -32,12 +34,12 @@ describe('SQLiteQueryGenerator', () => {
 
     it('can generate a create table statement #2', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.generateCreateTableStatement(ExtendedUser)).toEqual('CREATE TABLE "extended_users" (  "id" INTEGER PRIMARY KEY AUTOINCREMENT,\n  "createdAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  "email" VARCHAR(256) UNIQUE NOT NULL,\n  "firstName" VARCHAR(64),\n  "lastName" VARCHAR(64),\n  "playerType" VARCHAR(256) NOT NULL DEFAULT \'wizard\',\n  "primaryRoleID" VARCHAR(36),\n  "updatedAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  FOREIGN KEY("primaryRoleID") REFERENCES "roles"("id") ON DELETE SET NULL ON UPDATE SET NULL\n);');
+      expect(queryGenerator.generateCreateTableStatement(ExtendedUser)).toEqual('CREATE TABLE "extended_users" (  "id" INTEGER PRIMARY KEY AUTOINCREMENT,\n  "autoID" BIGINT UNIQUE NOT NULL,\n  "createdAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  "email" VARCHAR(256) UNIQUE NOT NULL,\n  "firstName" VARCHAR(64),\n  "lastName" VARCHAR(64),\n  "playerType" VARCHAR(256) NOT NULL DEFAULT \'wizard\',\n  "primaryRoleID" VARCHAR(36),\n  "updatedAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  FOREIGN KEY("primaryRoleID") REFERENCES "roles"("id") ON DELETE SET NULL ON UPDATE SET NULL\n);');
     });
 
     it('can generate a create table statement #3', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.generateCreateTableStatement(ExtendedUser, { ifNotExists: true })).toEqual('CREATE TABLE IF NOT EXISTS "extended_users" (  "id" INTEGER PRIMARY KEY AUTOINCREMENT,\n  "createdAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  "email" VARCHAR(256) UNIQUE NOT NULL,\n  "firstName" VARCHAR(64),\n  "lastName" VARCHAR(64),\n  "playerType" VARCHAR(256) NOT NULL DEFAULT \'wizard\',\n  "primaryRoleID" VARCHAR(36),\n  "updatedAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  FOREIGN KEY("primaryRoleID") REFERENCES "roles"("id") ON DELETE SET NULL ON UPDATE SET NULL\n);');
+      expect(queryGenerator.generateCreateTableStatement(ExtendedUser, { ifNotExists: true })).toEqual('CREATE TABLE IF NOT EXISTS "extended_users" (  "id" INTEGER PRIMARY KEY AUTOINCREMENT,\n  "autoID" BIGINT UNIQUE NOT NULL,\n  "createdAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  "email" VARCHAR(256) UNIQUE NOT NULL,\n  "firstName" VARCHAR(64),\n  "lastName" VARCHAR(64),\n  "playerType" VARCHAR(256) NOT NULL DEFAULT \'wizard\',\n  "primaryRoleID" VARCHAR(36),\n  "updatedAt" DATETIME NOT NULL DEFAULT (STRFTIME(\'%Y-%m-%d %H:%M:%f\', \'NOW\')),\n  FOREIGN KEY("primaryRoleID") REFERENCES "roles"("id") ON DELETE SET NULL ON UPDATE SET NULL\n);');
     });
 
     it('can generate a create table statement with a foreign key', () => {

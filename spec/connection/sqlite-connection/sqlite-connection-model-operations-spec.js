@@ -83,25 +83,31 @@ describe('SQLiteConnection', () => {
             firstName:  'Mary',
             lastName:   'Anne',
           }),
+          new models.ExtendedUser({
+            email:      'test2@example.com',
+            firstName:  'Joe',
+            lastName:   'Bob',
+          }),
         ];
 
         await connection.insert(models.ExtendedUser, userModels);
 
-        let user = await models.ExtendedUser.where.first();
-        expect(user.id).toEqual(1);
-        expect(user.createdAt).toBeInstanceOf(moment);
-        expect(user.createdAt.isValid()).toEqual(true);
-        expect(user.updatedAt).toBeInstanceOf(moment);
-        expect(user.updatedAt.isValid()).toEqual(true);
+        let users = await models.ExtendedUser.where.all();
+        expect(users[0].id).toEqual(1);
+        expect(users[1].id).toEqual(2); // Ensure autoincrement emulation is working
+        expect(users[0].createdAt).toBeInstanceOf(moment);
+        expect(users[0].createdAt.isValid()).toEqual(true);
+        expect(users[0].updatedAt).toBeInstanceOf(moment);
+        expect(users[0].updatedAt.isValid()).toEqual(true);
 
-        let previousUpdatedAt = user.updatedAt;
+        let previousUpdatedAt = users[0].updatedAt;
 
-        user.lastName = 'Joe';
-        let updatedUser = await connection.update(models.ExtendedUser, user);
+        users[0].lastName = 'Joe';
+        let updatedUser = await connection.update(models.ExtendedUser, users[0]);
         expect(previousUpdatedAt.valueOf() < updatedUser.updatedAt.valueOf()).toEqual(true);
 
         // Reload stored model to ensure results
-        user = await models.ExtendedUser.where.id.EQ(updatedUser.id).first();
+        let user = await models.ExtendedUser.where.id.EQ(updatedUser.id).first();
         expect(user.updatedAt.valueOf()).toEqual(updatedUser.updatedAt.valueOf());
       });
 
@@ -140,7 +146,7 @@ describe('SQLiteConnection', () => {
         await connection.insert(models.ExtendedUser, userModels);
 
         let user = await models.ExtendedUser.where.first();
-        expect(JSON.stringify(user)).toEqual('{"id":1,"createdAt":"07.30.2022 22:39:01","email":"test@example.com","firstName":"Mary","lastName":"Anne","playerType":"wizard","primaryRoleID":null,"updatedAt":"07.30.2022 22:39:01"}');
+        expect(JSON.stringify(user)).toEqual('{"id":1,"autoID":1,"createdAt":"07.30.2022 22:39:01","email":"test@example.com","firstName":"Mary","lastName":"Anne","playerType":"wizard","primaryRoleID":null,"updatedAt":"07.30.2022 22:39:01"}');
       });
     });
 

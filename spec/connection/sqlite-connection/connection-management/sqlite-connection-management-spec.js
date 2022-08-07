@@ -15,7 +15,9 @@ describe('SQLiteConnection', () => {
 
     beforeEach(async () => {
       connection = new SQLiteConnection({
-        models: require('../../../support/models'),
+        emulateBigIntAutoIncrement: true,
+        bindModels:                 false,
+        models:                     require('../../../support/models'),
       });
 
       let models = connection.getModels();
