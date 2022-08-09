@@ -85,8 +85,6 @@ describe('SQLiteConnection', () => {
 
         expect(await Role.count()).toBe(1);
         expect(await UserRole.count()).toBe(1);
-
-        expect(user.roles).toBe(roles);
       });
 
       it('can create multiple models for a multi-relational set', async () => {
@@ -129,8 +127,6 @@ describe('SQLiteConnection', () => {
 
         expect(await Role.count()).toBe(3);
         expect(await UserRole.count()).toBe(3);
-
-        expect(user.roles).toBe(roles);
       });
     });
 
