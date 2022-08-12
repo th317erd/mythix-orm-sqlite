@@ -50,10 +50,10 @@ describe('SQLiteConnection', () => {
 
           expect(creationOrder).toEqual([
             'Role',
-            'User',
             'RoleThing',
-            'UserRole',
+            'User',
             'UserThing',
+            'UserRole',
           ]);
         });
       });
