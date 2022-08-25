@@ -171,11 +171,11 @@ describe('SQLiteQueryGenerator', () => {
       let queryGenerator = connection.getQueryGenerator();
 
       try {
-          queryGenerator.generateSelectQueryCondition(queryPart, 'derp');
-          fail('unreachable');
-        } catch (error) {
-          expect(error).toMatch(/"{ caseSensitive: true }" is not supported for this connection type for the "LIKE" operator/);
-        }
+        queryGenerator.generateSelectQueryCondition(queryPart, 'derp');
+        fail('unreachable');
+      } catch (error) {
+        expect(error).toMatch(/"{ caseSensitive: true }" is not supported for this connection type for the "LIKE" operator/);
+      }
     });
 
     it('can generate a query condition (NOT LIKE)', () => {
@@ -208,11 +208,11 @@ describe('SQLiteQueryGenerator', () => {
 
       // Array is a special case
       try {
-          queryGenerator.generateSelectQueryCondition(queryPart, []);
-          fail('unreachable');
-        } catch (error) {
-          expect(error).toMatch(/Invalid value provided to operator "NOT_LIKE"/);
-        }
+        queryGenerator.generateSelectQueryCondition(queryPart, []);
+        fail('unreachable');
+      } catch (error) {
+        expect(error).toMatch(/Invalid value provided to operator "NOT_LIKE"/);
+      }
 
       expect(queryGenerator.generateSelectQueryCondition(queryPart, 'derp')).toEqual('"users"."id" NOT LIKE \'derp\' ESCAPE \'\\\'');
     });
