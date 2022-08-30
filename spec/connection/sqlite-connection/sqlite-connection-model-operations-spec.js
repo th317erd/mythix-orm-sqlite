@@ -52,8 +52,8 @@ describe('SQLiteConnection', () => {
             'Role',
             'RoleThing',
             'User',
-            'UserThing',
             'UserRole',
+            'UserThing',
           ]);
         });
       });

@@ -55,7 +55,7 @@ describe('SQLiteConnection', () => {
 
     describe('escape', () => {
       it('can escape a string value', () => {
-        expect(connection.escape(User.fields.id, 'test "hello";')).toEqual('\'test \\"hello\\";\'');
+        expect(connection.escape(User.fields.id, 'test "hello";')).toEqual('\'test "hello";\'');
       });
 
       it('can escape a integer value', () => {
