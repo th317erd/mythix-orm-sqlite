@@ -4,8 +4,8 @@
 
 /* global Buffer, describe, it, expect, beforeAll, afterEach, beforeAll, spyOn, fail */
 
-const { Utils } = require('mythix-orm');
-const moment    = require('moment');
+const { Utils }     = require('mythix-orm');
+const { DateTime }  = require('luxon');
 
 const {
   XID_REGEXP,
@@ -95,10 +95,10 @@ describe('SQLiteConnection', () => {
         let users = await models.ExtendedUser.where.all();
         expect(users[0].id).toEqual(1);
         expect(users[1].id).toEqual(2); // Ensure autoincrement emulation is working
-        expect(moment.isMoment(users[0].createdAt)).toEqual(true);
-        expect(users[0].createdAt.isValid()).toEqual(true);
-        expect(moment.isMoment(users[0].updatedAt)).toEqual(true);
-        expect(users[0].updatedAt.isValid()).toEqual(true);
+        expect(DateTime.isDateTime(users[0].createdAt)).toEqual(true);
+        expect(users[0].createdAt.isValid).toEqual(true);
+        expect(DateTime.isDateTime(users[0].updatedAt)).toEqual(true);
+        expect(users[0].updatedAt.isValid).toEqual(true);
 
         let previousUpdatedAt = users[0].updatedAt;
 
@@ -112,22 +112,35 @@ describe('SQLiteConnection', () => {
       });
 
       it('can use remote and local time', async () => {
-        let timeModels = [ new models.Time() ];
+        let now = DateTime.now();
+
+        let timeModels = [
+          new models.Time({
+            customDate:     now,
+            customDateTime: now,
+          }),
+        ];
 
         await connection.insert(models.Time, timeModels);
 
         let time = await models.Time.where.first();
         expect(time.id).toMatch(XID_REGEXP);
-        expect(moment.isMoment(time.datetime)).toEqual(true);
-        expect(time.datetime.isValid()).toEqual(true);
-        expect(moment.isMoment(time.datetimeLocal)).toEqual(true);
-        expect(time.datetimeLocal.isValid()).toEqual(true);
-        expect(moment.isMoment(time.date)).toEqual(true);
-        expect(time.date.isValid()).toEqual(true);
-        expect(time.date.toISOString()).toMatch(ISO8601_DATE_REGEXP);
-        expect(moment.isMoment(time.dateLocal)).toEqual(true);
-        expect(time.dateLocal.isValid()).toEqual(true);
-        expect(time.dateLocal.toISOString()).toMatch(ISO8601_DATE_REGEXP);
+        expect(DateTime.isDateTime(time.datetime)).toEqual(true);
+        expect(time.datetime.isValid).toEqual(true);
+        expect(Math.abs(time.datetime.valueOf() - now.valueOf()) < 12).toEqual(true);
+        expect(DateTime.isDateTime(time.datetimeLocal)).toEqual(true);
+        expect(time.datetimeLocal.isValid).toEqual(true);
+        expect(DateTime.isDateTime(time.date)).toEqual(true);
+        expect(time.date.isValid).toEqual(true);
+        expect(time.date.toISO()).toMatch(ISO8601_DATE_REGEXP);
+        expect(Math.abs(time.date.valueOf() - now.startOf('day').valueOf()) < 12).toEqual(true);
+        expect(DateTime.isDateTime(time.dateLocal)).toEqual(true);
+        expect(time.dateLocal.isValid).toEqual(true);
+        expect(time.dateLocal.toISO()).toMatch(ISO8601_DATE_REGEXP);
+        expect(time.customDate.isValid).toEqual(true);
+        expect(time.customDate.toFormat('yyyy-MM-dd')).toMatch(now.toFormat('yyyy-MM-dd'));
+        expect(time.customDateTime.isValid).toEqual(true);
+        expect(time.customDateTime.toISO()).toMatch(now.toISO());
       });
     });
 
