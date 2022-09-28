@@ -10,6 +10,7 @@ const { DateTime }  = require('luxon');
 const {
   XID_REGEXP,
   ISO8601_DATE_REGEXP,
+  createRunners,
 } = require('../../support/test-helpers');
 
 const {
@@ -21,6 +22,9 @@ describe('SQLiteConnection', () => {
   describe('model operations', () => {
     let connection;
     let models;
+
+    // eslint-disable-next-line no-unused-vars
+    const { it, fit } = createRunners(() => connection);
 
     beforeAll(async () => {
       try {

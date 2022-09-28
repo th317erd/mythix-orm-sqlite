@@ -2,13 +2,14 @@
 
 'use strict';
 
-/* global describe, it, beforeAll, afterEach, beforeAll, expect */
+/* global describe, beforeAll, afterEach, beforeAll, expect */
 
 const {
   createConnection,
   truncateTables,
 } = require('../sqlite-connection-helper');
 
+const { createRunners } = require('../../../support/test-helpers');
 
 describe('SQLiteConnection', () => {
   describe('one to many, or many to many relational operations', () => {
@@ -17,6 +18,9 @@ describe('SQLiteConnection', () => {
     let Role;
     let UserRole;
     let ValidationTest;
+
+    // eslint-disable-next-line no-unused-vars
+    const { it, fit } = createRunners(() => connection);
 
     beforeAll(async () => {
       let setup = await createConnection();

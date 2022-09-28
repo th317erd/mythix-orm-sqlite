@@ -3,14 +3,21 @@
 
 'use strict';
 
-/* global describe, it, expect, beforeAll */
+/* global describe, expect, beforeAll */
 
-const { SQLiteConnection }  = require('../../../../lib');
-const { UUID_REGEXP }       = require('../../../support/test-helpers');
+const { SQLiteConnection } = require('../../../../lib');
+
+const {
+  UUID_REGEXP,
+  createRunners,
+} = require('../../../support/test-helpers');
 
 describe('SQLiteQueryGenerator', () => {
   let connection;
   let User;
+
+  // eslint-disable-next-line no-unused-vars
+  const { it, fit } = createRunners(() => connection);
 
   beforeAll(() => {
     connection = new SQLiteConnection({

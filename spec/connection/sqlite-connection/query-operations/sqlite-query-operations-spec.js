@@ -2,10 +2,13 @@
 
 'use strict';
 
-/* global describe, it, expect, beforeAll, afterEach, beforeAll */
+/* global describe, expect, beforeAll, afterEach, beforeAll */
 
-const { Utils }       = require('mythix-orm');
-const { UUID_REGEXP } = require('../../../support/test-helpers');
+const { Utils } = require('mythix-orm');
+const {
+  UUID_REGEXP,
+  createRunners,
+} = require('../../../support/test-helpers');
 
 const {
   createConnection,
@@ -16,6 +19,9 @@ describe('SQLiteConnection', () => {
   let connection;
   let User;
   let Role;
+
+  // eslint-disable-next-line no-unused-vars
+  const { it, fit } = createRunners(() => connection);
 
   beforeAll(async () => {
     let setup = await createConnection();
