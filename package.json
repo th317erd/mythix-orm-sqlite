@@ -1,6 +1,6 @@
 {
   "name": "mythix-orm-sqlite",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "SQLite driver for Mythix ORM",
   "main": "lib/index.js",
   "type": "commonjs",
