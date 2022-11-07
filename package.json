@@ -34,7 +34,7 @@
   "homepage": "https://github.com/th317erd/mythix-orm-sqlite#readme",
   "peerDependencies": {
     "mythix-orm": "^1.8.3",
-    "mythix-orm-sql-base": "^1.7.3"
+    "mythix-orm-sql-base": "^1.7.4"
   },
   "dependencies": {
     "better-sqlite3": "^7.6.2",
