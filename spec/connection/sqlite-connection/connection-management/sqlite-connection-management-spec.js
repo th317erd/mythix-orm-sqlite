@@ -150,15 +150,15 @@ describe('SQLiteConnection', () => {
 
         let result = queryGenerator.parseFieldProjectionToFieldMap(sqlStatement);
         expect(Array.from(result.keys())).toEqual([
-          'User:firstName',
           'User:id',
+          'User:firstName',
           'User:lastName',
           'User:primaryRoleID',
         ]);
 
         expect(Array.from(result.values())).toEqual([
-          '"users"."firstName" AS "User:firstName"',
           '"users"."id" AS "User:id"',
+          '"users"."firstName" AS "User:firstName"',
           '"users"."lastName" AS "User:lastName"',
           '"users"."primaryRoleID" AS "User:primaryRoleID"',
         ]);
@@ -172,12 +172,12 @@ describe('SQLiteConnection', () => {
         let projectionFieldMap  = queryGenerator.parseFieldProjectionToFieldMap(sqlStatement);
 
         expect(connection.findAllFieldsFromFieldProjectionMap(projectionFieldMap)).toEqual([
-          Role.fields.id,
-          Role.fields.name,
-          User.fields.firstName,
           User.fields.id,
+          User.fields.firstName,
           User.fields.lastName,
           User.fields.primaryRoleID,
+          Role.fields.id,
+          Role.fields.name,
         ]);
       });
 
@@ -187,13 +187,13 @@ describe('SQLiteConnection', () => {
         let projectionFieldMap  = queryGenerator.parseFieldProjectionToFieldMap(sqlStatement);
 
         expect(connection.findAllFieldsFromFieldProjectionMap(projectionFieldMap)).toEqual([
-          'COUNT(*)',
-          Role.fields.id,
-          Role.fields.name,
-          User.fields.firstName,
           User.fields.id,
+          User.fields.firstName,
           User.fields.lastName,
           User.fields.primaryRoleID,
+          Role.fields.id,
+          Role.fields.name,
+          'COUNT(*)',
         ]);
       });
     });

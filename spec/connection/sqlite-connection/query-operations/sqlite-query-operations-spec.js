@@ -226,7 +226,7 @@ describe('SQLiteConnection', () => {
       let sqlStatement    = queryGenerator.generateSelectStatement(User.where.firstName.EQ('Mary').OR.lastName.EQ(null).ORDER('firstName'));
       let result          = await connection.query(sqlStatement);
 
-      // result = [ [ firstName, id, lastName, primaryRoleID ], ... ]
+      // result = [ [ id, firstName, lastName, primaryRoleID ], ... ]
 
       expect(result.rows).toBeInstanceOf(Array);
       expect(result.rows.length).toEqual(2);
@@ -234,16 +234,16 @@ describe('SQLiteConnection', () => {
       expect(result.rows[0].length).toEqual(4);
       expect(result.rows[1]).toBeInstanceOf(Array);
       expect(result.rows[1].length).toEqual(4);
-      expect(result.rows[0][0]).toEqual('First');
-      expect(result.rows[0][1]).toMatch(/[a-f0-9-]{36}/);
+      expect(result.rows[0][0]).toMatch(/[a-f0-9-]{36}/);
+      expect(result.rows[0][1]).toEqual('First');
       expect(result.rows[0][2]).toBe(null);
       expect(result.rows[0][3]).toMatch(/[a-f0-9-]{36}/);
-      expect(result.rows[1][0]).toEqual('Mary');
-      expect(result.rows[1][1]).toMatch(/[a-f0-9-]{36}/);
+      expect(result.rows[1][0]).toMatch(/[a-f0-9-]{36}/);
+      expect(result.rows[1][1]).toEqual('Mary');
       expect(result.rows[1][2]).toEqual('Anne');
       expect(result.rows[1][3]).toMatch(/[a-f0-9-]{36}/);
       expect(result.columns).toBeInstanceOf(Array);
-      expect(result.columns).toEqual([ 'User:firstName', 'User:id', 'User:lastName', 'User:primaryRoleID' ]);
+      expect(result.columns).toEqual([ 'User:id', 'User:firstName', 'User:lastName', 'User:primaryRoleID' ]);
     });
 
     it('should be able to request that response be formatted', async () => {
@@ -254,8 +254,8 @@ describe('SQLiteConnection', () => {
       let result          = await connection.query(sqlStatement);
 
       expect(result.columns).toEqual([
-        'User:firstName',
         'User:id',
+        'User:firstName',
         'User:lastName',
         'User:primaryRoleID',
       ]);

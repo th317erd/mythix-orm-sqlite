@@ -29,31 +29,37 @@ describe('SQLiteQueryGenerator', () => {
   });
 
   describe('generateOrderClause', () => {
+    const generateFieldKey = (field) => {
+      return `${field.Model.getModelName()}:${field.fieldName}`;
+    };
+
     it('can generate proper order clause', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.generateOrderClause([
-        {
-          Model:     User,
-          Field:     User.fields.id,
-          direction: '-',
-        },
-      ])).toEqual('ORDER BY "users"."id" DESC');
+
+      let order = new Map();
+      order.set(generateFieldKey(User.fields.id), { direction: '-', value: User.fields.id });
+
+      expect(queryGenerator.generateOrderClause(order)).toEqual('ORDER BY "users"."id" DESC');
+    });
+
+    it('can generate proper order clause with a string literal', () => {
+      let queryGenerator = connection.getQueryGenerator();
+
+      let order = new Map();
+      order.set(generateFieldKey(User.fields.id), { direction: '-', value: User.fields.id });
+      order.set('test', { direction: '+', value: 'test' });
+
+      expect(queryGenerator.generateOrderClause(order)).toEqual('ORDER BY "users"."id" DESC,test ASC');
     });
 
     it('can generate proper order clause with multiple orders', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.generateOrderClause([
-        {
-          Model:     User,
-          Field:     User.fields.id,
-          direction: '-',
-        },
-        {
-          Model:     User,
-          Field:     User.fields.firstName,
-          direction: '+',
-        },
-      ])).toEqual('ORDER BY "users"."id" DESC,"users"."firstName" ASC');
+
+      let order = new Map();
+      order.set(generateFieldKey(User.fields.id), { direction: '-', value: User.fields.id });
+      order.set(generateFieldKey(User.fields.firstName), { direction: '+', value: User.fields.firstName });
+
+      expect(queryGenerator.generateOrderClause(order)).toEqual('ORDER BY "users"."id" DESC,"users"."firstName" ASC');
     });
 
     it('should return an empty string if nothing was provided', () => {
@@ -67,13 +73,18 @@ describe('SQLiteQueryGenerator', () => {
   describe('getOrderLimitOffset', () => {
     it('can get order, limit, and offset from query', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).LIMIT(100).OFFSET(5).ORDER('+id'))).toEqual({
+      let result = queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).LIMIT(100).OFFSET(5).ORDER('+id'));
+
+      expect({
+        limit:  result.limit,
+        offset: result.offset,
+        order:  Array.from(result.order.values()),
+      }).toEqual({
         limit:  100,
         offset: 5,
         order:  [
           {
-            Model:     User,
-            Field:     User.fields.id,
+            value:     User.fields.id,
             direction: '+',
           },
         ],
@@ -82,13 +93,18 @@ describe('SQLiteQueryGenerator', () => {
 
     it('will allow limit to be infinity', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).LIMIT(Infinity).OFFSET(5).ORDER('+id'))).toEqual({
+      let result = queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).LIMIT(Infinity).OFFSET(5).ORDER('+id'));
+
+      expect({
+        limit:  result.limit,
+        offset: result.offset,
+        order:  Array.from(result.order.values()),
+      }).toEqual({
         limit:  Infinity,
         offset: 5,
         order:  [
           {
-            Model:     User,
-            Field:     User.fields.id,
+            value:     User.fields.id,
             direction: '+',
           },
         ],
@@ -97,29 +113,31 @@ describe('SQLiteQueryGenerator', () => {
 
     it('can order should be able to take mixed args', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).ORDER('+id', [ 'firstName', '-lastName' ], 'primaryRoleID'))).toEqual({
+      let result = queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).ORDER('+id', [ 'firstName' ], 'primaryRoleID').ORDER.DESC('+lastName'));
+
+      expect({
+        limit:  result.limit,
+        offset: result.offset,
+        order:  Array.from(result.order.values()),
+      }).toEqual({
         limit:  undefined,
         offset: undefined,
         order:  [
           {
-            Model:     User,
-            Field:     User.fields.id,
+            value:     User.fields.id,
             direction: '+',
           },
           {
-            Model:     User,
-            Field:     User.fields.firstName,
+            value:     User.fields.firstName,
             direction: '+',
           },
           {
-            Model:     User,
-            Field:     User.fields.lastName,
+            value:     User.fields.primaryRoleID,
+            direction: '+',
+          },
+          {
+            value:     User.fields.lastName,
             direction: '-',
-          },
-          {
-            Model:     User,
-            Field:     User.fields.primaryRoleID,
-            direction: '+',
           },
         ],
       });
@@ -127,46 +145,26 @@ describe('SQLiteQueryGenerator', () => {
 
     it('can overwrite order, limit, and offset from query', () => {
       let queryGenerator = connection.getQueryGenerator();
-      expect(queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).LIMIT(100).OFFSET(5).ORDER('+id').LIMIT(200).OFFSET(50).ORDER([ '+id', '--firstName' ]))).toEqual({
+      let result = queryGenerator.getOrderLimitOffset(User.where.primaryRoleID.EQ(1).LIMIT(100).OFFSET(5).ORDER('+id').LIMIT(200).OFFSET(50).ORDER([ '+id' ]).ORDER.DESC('+firstName'));
+
+      expect({
+        limit:  result.limit,
+        offset: result.offset,
+        order:  Array.from(result.order.values()),
+      }).toEqual({
         limit:  200,
         offset: 50,
         order:  [
           {
-            Model:     User,
-            Field:     User.fields.id,
+            value:     User.fields.id,
             direction: '+',
           },
           {
-            Model:     User,
-            Field:     User.fields.firstName,
+            value:     User.fields.firstName,
             direction: '-',
           },
         ],
       });
-    });
-
-    it('will throw an ambiguous error', () => {
-      let queryGenerator = connection.getQueryGenerator();
-      expect(() => queryGenerator.getOrderLimitOffset(
-        User.where
-          .primaryRoleID
-            .EQ(Role.where.id)
-          .LIMIT(100)
-          .OFFSET(5)
-          .ORDER([ '+id', '-firstName' ]),
-      )).toThrow(new Error('QueryGeneratorBase::getOrderLimitOffset: "id" ambiguous. You must use a fully qualified field name for an ORDER clause. Example: "+Model:id".'));
-    });
-
-    it('will throw a no fields found error', () => {
-      let queryGenerator = connection.getQueryGenerator();
-      expect(() => queryGenerator.getOrderLimitOffset(
-        User.where
-          .primaryRoleID
-            .EQ(Role.where.id)
-          .LIMIT(100)
-          .OFFSET(5)
-          .ORDER([ 'User:' ]),
-      )).toThrow(new Error('QueryGeneratorBase::getOrderLimitOffset: No field names found for "User:".'));
     });
 
     it('will throw error if it can not find the field', () => {
@@ -178,7 +176,7 @@ describe('SQLiteQueryGenerator', () => {
           .LIMIT(100)
           .OFFSET(5)
           .ORDER([ 'User:derp' ]),
-      )).toThrow(new Error('QueryGeneratorBase::getOrderLimitOffset: Unable to locate field "User"."derp".'));
+      )).toThrow(new Error('QueryUtils::margeFields: Field "derp" not found.'));
     });
   });
 
@@ -205,7 +203,7 @@ describe('SQLiteQueryGenerator', () => {
             .EQ(1)
           .LIMIT(100)
           .OFFSET(5)
-          .ORDER([ '-id' ]),
+          .ORDER.DESC([ 'id' ]),
       )).toEqual('ORDER BY "users"."id" DESC LIMIT 100 OFFSET 5');
     });
 
@@ -215,7 +213,7 @@ describe('SQLiteQueryGenerator', () => {
         User.where
           .primaryRoleID
             .EQ(1),
-      )).toEqual('');
+      )).toEqual('ORDER BY "users"."rowid" ASC');
     });
 
     it('can generate proper order clause with multiple orders', () => {
@@ -226,7 +224,7 @@ describe('SQLiteQueryGenerator', () => {
             .EQ(1)
           .LIMIT(100)
           .OFFSET(5)
-          .ORDER([ '+id', '-firstName' ]),
+          .ORDER('+id').ORDER.DESC('+firstName'),
       )).toEqual('ORDER BY "users"."id" ASC,"users"."firstName" DESC LIMIT 100 OFFSET 5');
     });
 
@@ -238,7 +236,7 @@ describe('SQLiteQueryGenerator', () => {
             .EQ(1)
           .LIMIT(Infinity)
           .OFFSET(5)
-          .ORDER([ '+id', '-firstName' ]),
+          .ORDER([ 'id' ]).ORDER.DESC('+firstName'),
       )).toEqual('ORDER BY "users"."id" ASC,"users"."firstName" DESC OFFSET 5');
     });
 
@@ -249,7 +247,7 @@ describe('SQLiteQueryGenerator', () => {
           .primaryRoleID
             .EQ(1)
           .OFFSET(5)
-          .ORDER([ '+id', '-firstName' ]),
+          .ORDER([ '+id' ]).ORDER.DESC('+firstName'),
       )).toEqual('ORDER BY "users"."id" ASC,"users"."firstName" DESC OFFSET 5');
     });
 
@@ -260,7 +258,7 @@ describe('SQLiteQueryGenerator', () => {
           .primaryRoleID
             .EQ(1)
           .LIMIT(10)
-          .ORDER([ '+id', '-firstName' ]),
+          .ORDER('id').ORDER.DESC('+firstName'),
       )).toEqual('ORDER BY "users"."id" ASC,"users"."firstName" DESC LIMIT 10');
     });
 
@@ -270,7 +268,7 @@ describe('SQLiteQueryGenerator', () => {
         User.where
           .primaryRoleID
             .EQ(1)
-          .ORDER([ '+id', '-firstName' ]),
+          .ORDER('id').ORDER.DESC('+firstName'),
       )).toEqual('ORDER BY "users"."id" ASC,"users"."firstName" DESC');
     });
 
@@ -282,7 +280,7 @@ describe('SQLiteQueryGenerator', () => {
             .EQ(1)
           .LIMIT(100)
           .OFFSET(10),
-      )).toEqual('LIMIT 100 OFFSET 10');
+      )).toEqual('ORDER BY "users"."rowid" ASC LIMIT 100 OFFSET 10');
     });
   });
 });
