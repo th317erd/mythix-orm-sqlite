@@ -583,7 +583,7 @@ describe('SQLiteQueryGenerator', () => {
         'User:firstName',
         'User:lastName',
         'User:primaryRoleID',
-        'User:rowid',
+        '"users"."rowid" AS "User:rowid"',
       ]);
 
       expect(Array.from(result.projectionFields.values())).toEqual([
