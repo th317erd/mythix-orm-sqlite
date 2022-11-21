@@ -333,7 +333,7 @@ describe('SQLiteQueryGenerator', () => {
       let queryGenerator  = connection.getQueryGenerator();
       let result          = queryGenerator.generateDeleteStatement(User, User.where.id.EQ('test'));
 
-      expect(result).toEqual('DELETE FROM "users" WHERE "users"."id" = \'test\' ORDER BY "users"."rowid" ASC LIMIT 4294967295 OFFSET 0');
+      expect(result).toEqual('DELETE FROM "users" WHERE "users"."id" = \'test\' RETURNING "users"."id" ORDER BY "users"."rowid" ASC LIMIT 4294967295 OFFSET 0');
     });
 
     it('should generate a delete statement with an order, limit, and offset', () => {
@@ -347,7 +347,7 @@ describe('SQLiteQueryGenerator', () => {
       let queryGenerator  = connection.getQueryGenerator();
       let result          = queryGenerator.generateDeleteStatement(User, User.where.firstName.EQ('Bob').ORDER('firstName').LIMIT(50).OFFSET(10));
 
-      expect(result).toEqual('DELETE FROM "users" WHERE "users"."firstName" = \'Bob\' ORDER BY "users"."firstName" ASC LIMIT 50 OFFSET 10');
+      expect(result).toEqual('DELETE FROM "users" WHERE "users"."firstName" = \'Bob\' RETURNING "users"."id" ORDER BY "users"."firstName" ASC LIMIT 50 OFFSET 10');
     });
   });
 });

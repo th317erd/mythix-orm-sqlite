@@ -263,14 +263,8 @@ describe('SQLiteConnection', () => {
         storedModels[0].firstName = 'Test1';
         storedModels[1].lastName = 'Test1';
 
-        let users = await connection.update(User, storedModels);
-
-        expect(users).toBeInstanceOf(Array);
-        expect(users.length).toEqual(2);
-        expect(users[0]).toBeInstanceOf(User);
-        expect(users[1]).toBeInstanceOf(User);
-        expect(users[0].id).toEqual(insertModels[0].id);
-        expect(users[1].id).toEqual(insertModels[1].id);
+        let result = await connection.update(User, storedModels);
+        expect(result).toEqual(2);
 
         // Ensure the changes were persisted
         let storedUsers = await Utils.collect(connection.select(User));

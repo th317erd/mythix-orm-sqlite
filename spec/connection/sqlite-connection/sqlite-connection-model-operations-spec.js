@@ -107,12 +107,8 @@ describe('SQLiteConnection', () => {
         let previousUpdatedAt = users[0].updatedAt;
 
         users[0].lastName = 'Joe';
-        let updatedUser = await connection.update(models.ExtendedUser, users[0]);
-        expect(previousUpdatedAt.valueOf() < updatedUser.updatedAt.valueOf()).toEqual(true);
-
-        // Reload stored model to ensure results
-        let user = await models.ExtendedUser.where.id.EQ(updatedUser.id).first();
-        expect(user.updatedAt.valueOf()).toEqual(updatedUser.updatedAt.valueOf());
+        await connection.update(models.ExtendedUser, users[0]);
+        expect(previousUpdatedAt.valueOf() < users[0].updatedAt.valueOf()).toEqual(true);
       });
 
       it('can use remote and local time', async () => {
