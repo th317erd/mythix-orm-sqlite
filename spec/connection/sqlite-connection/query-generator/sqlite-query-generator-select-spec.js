@@ -551,7 +551,7 @@ describe('SQLiteQueryGenerator', () => {
           .LIMIT(100)
           .OFFSET(500),
       );
-      expect(queryString).toEqual('SELECT "users"."firstName" AS "User:firstName","users"."lastName" AS "User:lastName","users"."primaryRoleID" AS "User:primaryRoleID","users"."rowid" AS "User:rowid" FROM "users" WHERE "users"."primaryRoleID" = 1 ORDER BY "users"."rowid" ASC LIMIT 100 OFFSET 500');
+      expect(queryString).toEqual('SELECT DISTINCT "users"."id" AS "User:id","users"."firstName" AS "User:firstName","users"."lastName" AS "User:lastName","users"."primaryRoleID" AS "User:primaryRoleID","users"."rowid" AS "User:rowid" FROM "users" WHERE "users"."primaryRoleID" = 1 ORDER BY "users"."rowid" ASC LIMIT 100 OFFSET 500');
     });
 
     it('can generate a select statement using literals', () => {

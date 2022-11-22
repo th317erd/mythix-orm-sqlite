@@ -48,7 +48,7 @@ describe('SQLiteConnection', () => {
 
       it('can stringify a literal to SQL', () => {
         let literal = SQLiteConnection.Literal('distinct', 'User:firstName');
-        expect(literal.toString(connection)).toEqual('DISTINCT "users"."firstName" AS "User:firstName"');
+        expect(literal.toString(connection)).toEqual('DISTINCT');
       });
 
       it('will stringify to class name if no connection given', () => {
