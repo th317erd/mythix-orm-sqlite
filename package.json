@@ -33,18 +33,18 @@
   },
   "homepage": "https://github.com/th317erd/mythix-orm-sqlite#readme",
   "peerDependencies": {
-    "mythix-orm": "^1.11.1",
-    "mythix-orm-sql-base": "^1.9.1"
+    "mythix-orm": "^1.11.3",
+    "mythix-orm-sql-base": "^1.9.2"
   },
   "dependencies": {
-    "better-sqlite3": "^7.6.2",
+    "better-sqlite3": "^8.0.0",
     "luxon": "^3.1.0",
     "nife": "^1.12.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@spothero/eslint-plugin-spothero": "github:spothero/eslint-plugin-spothero",
-    "eslint": "^8.27.0",
+    "eslint": "^8.28.0",
     "jasmine": "^4.5.0",
     "nyc": "^15.1.0"
   },
