@@ -1,5 +1,3 @@
-# mythix-orm-sqlite
-
 SQLite database driver for [Mythix ORM](https://www.npmjs.com/package/mythix-orm).
 
 ## Install
@@ -46,4 +44,4 @@ const SQLiteConnection = require('mythix-orm-sqlite');
 | `foreignConstraints` | `boolean` | `true` | Enable or disable foreign key constraints. By default, foreign key constraints are not enabled in SQLite, so Mythix ORM will enable them by executing a `DB.pragma('foreign_keys = ON')` as soon as the connection is active. Setting this value to `false` will bypass this behavior, leaving SQLite with its default of not having foreign key constraints enabled. |
 | `logger` | Logger Interface | `undefined` | Assign a logger to the connection. If a logger is assigned, then every query (and every error) will be logged using this logger. |
 | `models` | `Array<Model>` | `undefined` | Models to register with the connection (these models will be bound to the connection if the `boundModels` option is `true`).
-| `queryGenerator` | [QueryGenerator](https://github.com/th317erd/mythix-orm/wiki/QueryGeneratorBase) | [SQLiteQueryGenerator](https://github.com/th317erd/mythix-orm-sqlite/wiki/SQLiteQueryGenerator) | Provide an alternate `QueryGenerator` interface for generating SQL statements for SQLite. This is not usually needed, as the `SQLiteConnection` itself will provide its own generator interface. However, if you want to customize the default query generator, or want to provide your own, you can do so using this option. |
+| `queryGenerator` | [QueryGenerator](https://github.com/th317erd/mythix-orm/wiki/QueryGeneratorBase) | <see>SQLiteQueryGenerator</see> | Provide an alternate `QueryGenerator` interface for generating SQL statements for SQLite. This is not usually needed, as the `SQLiteConnection` itself will provide its own generator interface. However, if you want to customize the default query generator, or want to provide your own, you can do so using this option. |
