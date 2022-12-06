@@ -94,7 +94,7 @@ describe('SQLiteQueryGenerator', () => {
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GT', 'derp')).toEqual('>');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GT', 1)).toEqual('>');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GT', BigInt(1))).toEqual('>');
-      expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GT', [])).toEqual('>');
+      expect(() => queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GT', [])).toThrow(new TypeError('SQLiteQueryGenerator::generateSelectQueryOperatorFromQueryEngineOperator: Array of values provided to "GT" (greater than) operator.'));
     });
 
     it('can generate condition operators for GTE', () => {
@@ -105,7 +105,7 @@ describe('SQLiteQueryGenerator', () => {
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GTE', 'derp')).toEqual('>=');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GTE', 1)).toEqual('>=');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GTE', BigInt(1))).toEqual('>=');
-      expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GTE', [])).toEqual('>=');
+      expect(() => queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'GTE', [])).toThrow(new TypeError('SQLiteQueryGenerator::generateSelectQueryOperatorFromQueryEngineOperator: Array of values provided to "GTE" (greater than or equal to) operator.'));
     });
 
     it('can generate condition operators for LT', () => {
@@ -116,7 +116,7 @@ describe('SQLiteQueryGenerator', () => {
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LT', 'derp')).toEqual('<');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LT', 1)).toEqual('<');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LT', BigInt(1))).toEqual('<');
-      expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LT', [])).toEqual('<');
+      expect(() => queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LT', [])).toThrow(new TypeError('SQLiteQueryGenerator::generateSelectQueryOperatorFromQueryEngineOperator: Array of values provided to "LT" (less than) operator.'));
     });
 
     it('can generate condition operators for LTE', () => {
@@ -127,7 +127,7 @@ describe('SQLiteQueryGenerator', () => {
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LTE', 'derp')).toEqual('<=');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LTE', 1)).toEqual('<=');
       expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LTE', BigInt(1))).toEqual('<=');
-      expect(queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LTE', [])).toEqual('<=');
+      expect(() => queryGenerator.generateSelectQueryOperatorFromQueryEngineOperator({}, 'LTE', [])).toThrow(new TypeError('SQLiteQueryGenerator::generateSelectQueryOperatorFromQueryEngineOperator: Array of values provided to "LTE" (less than or equal to) operator.'));
     });
 
     it('can generate a query condition (LIKE)', () => {
