@@ -8,8 +8,6 @@ npm i --save mythix-orm-sqlite
 
 ## Documentation
 
-Documentation can be found at the [WIKI](https://github.com/th317erd/mythix-orm-sqlite/wiki).
-
 Documentation for Mythix ORM can be found at the [Mythix ORM WIKI](https://github.com/th317erd/mythix-orm/wiki).
 
 ## Usage
