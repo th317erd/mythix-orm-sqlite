@@ -1,5 +1,7 @@
 # mythix-orm-sqlite
 
+![Mythix](docs/mythix-logo-colored.png)
+
 SQLite database driver for [Mythix ORM](https://www.npmjs.com/package/mythix-orm).
 
 ## Install
