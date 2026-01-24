@@ -303,7 +303,7 @@ describe('SQLiteConnection', () => {
         expect(avg).toEqual(12);
 
         avg = await Number.where.average('numberFloat');
-        expect(avg).toEqual(16.447499999999998);
+        expect(avg).toBeCloseTo(16.4475, 10);
       });
     });
 
@@ -322,7 +322,7 @@ describe('SQLiteConnection', () => {
         expect(avg).toEqual(48);
 
         avg = await Number.where.sum('numberFloat');
-        expect(avg).toEqual(65.78999999999999);
+        expect(avg).toBeCloseTo(65.79, 10);
       });
     });
 
