@@ -1,11 +1,11 @@
 {
   "name": "mythix-orm-sqlite",
-  "version": "1.12.1",
+  "version": "2.0.0",
   "description": "SQLite driver for Mythix ORM",
   "main": "lib/index.js",
   "type": "commonjs",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.5.0"
   },
   "scripts": {
     "coverage": "clear ; node ./node_modules/.bin/nyc ./node_modules/.bin/jasmine",
@@ -40,7 +40,6 @@
     "mythix-orm-sql-base": "^1.12.1"
   },
   "dependencies": {
-    "better-sqlite3": "^12.6.2",
     "luxon": "^3.7.2",
     "nife": "^1.12.1",
     "uuid": "^11.1.0"

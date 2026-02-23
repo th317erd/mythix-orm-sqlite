@@ -23,8 +23,9 @@ describe('SQLiteConnection', () => {
 
   describe('exec', () => {
     it('should be able to call exec', async () => {
+      // node:sqlite exec() returns undefined (no return value)
       let result = await connection.exec('SELECT 1+1');
-      expect(result.name).toEqual(':memory:');
+      expect(result).toBeUndefined();
     });
   });
 
