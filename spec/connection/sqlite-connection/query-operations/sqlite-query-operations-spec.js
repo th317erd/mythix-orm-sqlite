@@ -15,7 +15,7 @@ const {
   truncateTables,
 } = require('../sqlite-connection-helper');
 
-describe('SQLiteConnection', () => {
+describe('SQLiteConnection: QueryOps', () => {
   let connection;
   let User;
   let Role;

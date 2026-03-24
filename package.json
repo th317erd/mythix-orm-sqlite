@@ -40,16 +40,16 @@
     "mythix-orm-sql-base": "^1.12.1"
   },
   "dependencies": {
-    "better-sqlite3": "^12.6.2",
+    "better-sqlite3": "^12.8.0",
     "luxon": "^3.7.2",
     "nife": "^1.12.1",
-    "uuid": "^11.1.0"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@spothero/eslint-plugin-spothero": "github:spothero/eslint-plugin-spothero",
-    "eslint": "^8.42.0",
-    "jasmine": "^5.0.1",
-    "nyc": "^15.1.0"
+    "eslint": "^10.1.0",
+    "jasmine": "^6.1.0",
+    "nyc": "^18.0.0"
   },
   "nyc": {
     "reporter": [

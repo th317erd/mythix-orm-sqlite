@@ -13,7 +13,7 @@ const {
 
 const { createRunners } = require('../../../support/test-helpers');
 
-describe('SQLiteConnection', () => {
+describe('SQLiteConnection: DatabaseOps', () => {
   describe('database operations', () => {
     let connection;
     let User;

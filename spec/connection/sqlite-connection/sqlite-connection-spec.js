@@ -9,7 +9,7 @@ const {
   truncateTables,
 } = require('./sqlite-connection-helper');
 
-describe('SQLiteConnection', () => {
+describe('SQLiteConnection: Connection', () => {
   let connection;
 
   beforeAll(async () => {

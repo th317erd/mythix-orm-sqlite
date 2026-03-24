@@ -8,7 +8,7 @@ const { Literals }          = require('mythix-orm');
 const { SQLiteConnection }  = require('../../../../lib');
 const { createRunners }     = require('../../../support/test-helpers');
 
-describe('SQLiteConnection', () => {
+describe('SQLiteConnection: ConnectionMgmt', () => {
   describe('connection management', () => {
     let connection;
     let User;

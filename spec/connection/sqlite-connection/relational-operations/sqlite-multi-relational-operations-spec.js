@@ -11,7 +11,7 @@ const {
 
 const { createRunners } = require('../../../support/test-helpers');
 
-describe('SQLiteConnection', () => {
+describe('SQLiteConnection: MultiRelationalOps', () => {
   describe('one to many, or many to many relational operations', () => {
     let connection;
     let User;

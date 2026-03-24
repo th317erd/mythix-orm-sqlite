@@ -12,7 +12,7 @@ const {
   createRunners,
 } = require('../../../support/test-helpers');
 
-describe('SQLiteQueryGenerator', () => {
+describe('SQLiteQueryGenerator: InsertUpdateDelete', () => {
   let connection;
   let User;
 
@@ -209,16 +209,6 @@ describe('SQLiteQueryGenerator', () => {
       ]);
 
       expect(result).toEqual('INSERT INTO "users" ("id","firstName","lastName") VALUES (\'6a69f57b-9ada-45cd-8dd9-23a753a2bbfc\',\'Johnny\',\'Bob\'),\n(\'6a69f57b-9ada-45cd-8dd9-23a753a2bbf3\',\'Test\',\'User\') RETURNING id');
-    });
-
-    it('should skip newlines', () => {
-      let queryGenerator  = connection.getQueryGenerator();
-      let result          = queryGenerator.generateInsertStatement(User, [
-        { id: '6a69f57b-9ada-45cd-8dd9-23a753a2bbfc', firstName: 'Johnny', lastName: 'Bob' },
-        new User({ id: '6a69f57b-9ada-45cd-8dd9-23a753a2bbf3', firstName: 'Test', lastName: 'User' }),
-      ], { newlines: false });
-
-      expect(result).toEqual('INSERT INTO "users" ("id","firstName","lastName") VALUES (\'6a69f57b-9ada-45cd-8dd9-23a753a2bbfc\',\'Johnny\',\'Bob\'),(\'6a69f57b-9ada-45cd-8dd9-23a753a2bbf3\',\'Test\',\'User\') RETURNING id');
     });
 
     it('should skip newlines', () => {

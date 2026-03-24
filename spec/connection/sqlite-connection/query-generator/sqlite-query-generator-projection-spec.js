@@ -9,7 +9,7 @@ const { Literals }          = require('mythix-orm');
 const { SQLiteConnection }  = require('../../../../lib');
 const { createRunners }     = require('../../../support/test-helpers');
 
-describe('SQLiteQueryGenerator', () => {
+describe('SQLiteQueryGenerator: Projection', () => {
   let connection;
   let User;
   let Role;
